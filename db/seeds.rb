@@ -8,13 +8,33 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-676.times do
+require "csv"
+
+# Clear existing data
+Product.destroy_all
+Category.destroy_all
+
+puts "Database cleared"
+
+csv_file = Rails.root.join('db/products.csv')
+csv_data = File.read(csv_file)
+
+products = CSV.parse(csv_data, headers: true)
+
+# If CSV was created by Excel in Windows you may also need to set an encoding type:
+# Products = CSV.parse(csv_data, headers: true, encoding: "ISO-8859-1")
+
+products.each do |product|
+  category = Category.find_or_create_by(name: product["category"])
+
   Product.create(
-    title: Faker::Commerce.product_name,
-    description: Faker::Lorem.paragraph,
-    price: Faker::Commerce.price(range: 0.99..99.99),
-    stock_quantity: Faker::Number.between(from: 1, to: 100)
+    title: product["title"],
+    description: product["description"],
+    price: product["price"].to_f,
+    stock_quantity: product["stock_quantity"].to_i,
+    category: category
   )
 end
 
+puts "Created #{Category.count} categories"
 puts "Created #{Product.count} products"
