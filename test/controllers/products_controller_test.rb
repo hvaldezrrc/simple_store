@@ -1,3 +1,4 @@
+fixtures :categories
 require "test_helper"
 
 class ProductsControllerTest < ActionDispatch::IntegrationTest
