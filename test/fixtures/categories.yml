@@ -2,6 +2,10 @@
 
 one:
   name: MyString
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
 
 two:
   name: MyString
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
